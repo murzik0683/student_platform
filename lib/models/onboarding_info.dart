@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:platform/screens/user_register_screen.dart';
 
 class OnboardingInfo {
   final image;
@@ -16,17 +15,14 @@ class OnboardingInfo {
 
 class OnboardingController extends GetxController {
   var selectedPageIndex = 0.obs;
+
   bool get isLastPage => selectedPageIndex.value == onboardingPage.length - 1;
   var pageController = PageController();
 
   forwardElevation() {
     if (isLastPage) {
-      //return Navigator.of(context).pushNamed('/user_register_screen');
-      // return MaterialPageRoute(
-      //   builder: (context) {
-      //     return const UserRegister();
-      //   },
-      // );
+      return Get.offAllNamed('/user_register_screen');
+      //return Navigator.of(context).pushNamed('/user_register_screen'); // this method does not work
     } else {
       pageController.nextPage(duration: 300.milliseconds, curve: Curves.ease);
     }

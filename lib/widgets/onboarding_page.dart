@@ -22,7 +22,6 @@ class OnboardingPage extends StatelessWidget {
                   padding: const EdgeInsets.all(30),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
-                    //mainAxisSize: MainAxisSize.max,
                     children: [
                       _buildSpacer(15),
                       ClipOval(

@@ -97,8 +97,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
       onPressed: () {
         if (_formKey.currentState!.validate()) {
           setState(() {
-            Navigator.of(context).pushNamed('/first_screen');
-            //Navigator.of(context).pushReplacementNamed('/first_screen');
+            //Navigator.of(context).pushNamed('/first_screen');
+            Navigator.of(context).pushReplacementNamed('/first_screen');
           });
         }
       },
