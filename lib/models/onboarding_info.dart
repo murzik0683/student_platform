@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class OnboardingInfo {
-  final image;
-  final title;
-  final description;
+  final String image;
+  final String title;
+  final String description;
 
   OnboardingInfo(
     this.image,
