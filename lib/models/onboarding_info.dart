@@ -22,7 +22,6 @@ class OnboardingController extends GetxController {
   forwardElevation() {
     if (isLastPage) {
       return Get.offAllNamed('/user_register_screen');
-      //return Navigator.of(context).pushNamed('/user_register_screen'); // this method does not work
     } else {
       pageController.nextPage(duration: 300.milliseconds, curve: Curves.ease);
     }
