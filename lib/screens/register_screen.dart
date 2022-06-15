@@ -52,6 +52,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       children: [
         TextFormField(
           decoration: const InputDecoration(
+            prefixIcon: Icon(Icons.mail),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.all(
                 Radius.circular(15),
@@ -66,7 +67,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
         ),
         _buildSpacer(15),
         TextFormField(
+          obscureText: true,
           decoration: const InputDecoration(
+            prefixIcon: Icon(Icons.vpn_key),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.all(
                 Radius.circular(15),
