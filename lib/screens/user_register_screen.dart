@@ -111,6 +111,7 @@ class _UserRegisterState extends State<UserRegister> {
     return Column(
       children: [
         TextFormField(
+          obscureText: true,
           key: _passwordFieldKey,
           decoration: const InputDecoration(hintText: 'Пароль'),
           validator: (value) {
@@ -124,6 +125,7 @@ class _UserRegisterState extends State<UserRegister> {
         ),
         _buildSpacer(10),
         TextFormField(
+          obscureText: true,
           decoration: const InputDecoration(hintText: 'Повторите пароль'),
           validator: (value) {
             if (value != _passwordFieldKey.currentState!.value) {
