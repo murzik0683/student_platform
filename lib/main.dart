@@ -7,6 +7,8 @@ import 'package:platform/screens/user_dialogue_chat.dart';
 import 'package:platform/screens/user_register_screen.dart';
 import 'package:platform/screens/user_register_screen_two.dart';
 import 'package:platform/widgets/onboarding_page.dart';
+import 'package:platform/screens/main_screen.dart';
+import 'package:platform/screens/chat.dart';
 
 void main() {
   runApp(const MyApp());
@@ -22,15 +24,16 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: ThemeColors.themeColor,
       ),
+      home: const MainScreen(),
       routes: {
-        '/first_screen': (context) => const UserCalendar(),
+        '/first_screen': (context) => UserCalendar(),
         '/user_register_screen': (context) => const UserRegister(),
         '/user_register_screen_two': (context) => const UserRegisterTwo(),
         '/user_message_chats': (context) => const UserDialogueChats(),
         '/onboarding_page': (context) => const OnboardingPage(),
+        '/chat': (context) => const ChatPage(),
       },
       initialRoute: '/',
-      home: const RegisterScreen(),
     );
   }
 }
