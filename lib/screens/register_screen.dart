@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:platform/helpers/colors.dart';
+import 'package:platform/widgets/widgets.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({Key? key}) : super(key: key);
@@ -51,6 +52,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       children: [
         TextFormField(
           decoration: const InputDecoration(
+            prefixIcon: Icon(Icons.mail),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.all(
                 Radius.circular(15),
@@ -65,7 +67,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
         ),
         _buildSpacer(15),
         TextFormField(
+          obscureText: true,
           decoration: const InputDecoration(
+            prefixIcon: Icon(Icons.vpn_key),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.all(
                 Radius.circular(15),
@@ -84,46 +88,36 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 
   Widget _buildTextButton() {
-    return TextButton(
-      style: ButtonStyle(
-        minimumSize: MaterialStateProperty.all(
-          const Size(350, 55),
-        ),
-        shape: MaterialStateProperty.all(
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(15))),
-        backgroundColor: MaterialStateProperty.all(ThemeColors.themeColor),
-        overlayColor: MaterialStateProperty.all(CustomColors.greyColor),
-      ),
-      onPressed: () {
-        if (_formKey.currentState!.validate()) {
-          setState(() {
-            //Navigator.of(context).pushNamed('/first_screen');
-            Navigator.of(context).pushReplacementNamed('/first_screen');
-          });
-        }
-      },
-      child: const Text(
-        'Enter',
-        style: TextStyle(color: CustomColors.whiteColor, fontSize: 22),
-      ),
-    );
+    return textButton('Enter', () {
+      if (_formKey.currentState!.validate()) {
+        setState(() {
+          Navigator.of(context).pushReplacementNamed('/first_screen');
+        });
+      }
+    });
   }
 
   Widget _buildTextRegister() {
-    return InkWell(
-      overlayColor: MaterialStateProperty.all(CustomColors.greyColor),
-      child: const SizedBox(
-        child: Text(
-          'Do not have an Account? Register Here',
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 16,
-          ),
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        const Text(
+          'Do not have an Account?',
+          style: TextStyle(fontSize: 16),
         ),
-      ),
-      onTap: () {
-        Navigator.of(context).pushNamed('/onboarding_page');
-      },
+        GestureDetector(
+          onTap: () {
+            Navigator.of(context).pushNamed('/onboarding_page');
+          },
+          child: const Text(
+            '  Register Here',
+            style: TextStyle(
+                color: ThemeColors.themeColor,
+                fontWeight: FontWeight.bold,
+                fontSize: 16),
+          ),
+        )
+      ],
     );
   }
 }
