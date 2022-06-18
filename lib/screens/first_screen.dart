@@ -57,23 +57,23 @@ class _UserCalendarState extends State<UserCalendar> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('Календарь'),
+          title: const Text('Календарь'),
         ),
         body: SingleChildScrollView(
             child: Column(children: <Widget>[
           Card(
               child: CalendarCarousel(
             selectedDateTime: _currentDate,
-            weekendTextStyle: TextStyle(
+            weekendTextStyle: const TextStyle(
               color: Colors.red,
             ),
             weekFormat: false,
             selectedDayBorderColor: Colors.grey,
             markedDatesMap: _markedDateMap,
             selectedDayButtonColor: Colors.grey,
-            selectedDayTextStyle: TextStyle(color: Colors.black),
+            selectedDayTextStyle: const TextStyle(color: Colors.black),
             todayBorderColor: Colors.transparent,
-            weekdayTextStyle: TextStyle(color: Colors.black),
+            weekdayTextStyle: const TextStyle(color: Colors.black),
             height: 420.0,
             daysHaveCircularBorder: true,
             todayButtonColor: Colors.grey,

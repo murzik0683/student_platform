@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:platform/helpers/colors.dart';
-import 'package:platform/screens/first_screen.dart';
-import 'package:platform/screens/register_screen.dart';
 import 'package:platform/screens/user_dialogue_chat.dart';
 import 'package:platform/screens/user_register_screen.dart';
 import 'package:platform/screens/user_register_screen_two.dart';
@@ -26,7 +24,7 @@ class MyApp extends StatelessWidget {
       ),
       home: const MainScreen(),
       routes: {
-        '/first_screen': (context) => UserCalendar(),
+        '/first_screen': (context) =>const  MainScreen(),
         '/user_register_screen': (context) => const UserRegister(),
         '/user_register_screen_two': (context) => const UserRegisterTwo(),
         '/user_message_chats': (context) => const UserDialogueChats(),

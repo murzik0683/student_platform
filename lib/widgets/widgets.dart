@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:platform/helpers/colors.dart';
 
-SizedBox floatButton(int tag, String image, fun) {
+SizedBox floatButton(int tag, String image, Function fun) {
   return SizedBox(
     width: 50,
     child: FloatingActionButton(
@@ -11,7 +11,7 @@ SizedBox floatButton(int tag, String image, fun) {
         width: 25,
       ),
       backgroundColor: CustomColors.whiteColor,
-      onPressed: fun,
+      onPressed: ()=>fun(),
     ),
   );
 }
@@ -50,7 +50,7 @@ TextButton textButton(String title, fun) {
   );
 }
 
-Padding dropdownButton(child) {
+Padding dropdownButton(Widget child) {
   return Padding(
     padding: const EdgeInsets.all(1),
     child: Container(

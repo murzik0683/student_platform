@@ -4,7 +4,6 @@ import 'package:platform/helpers/colors.dart';
 import 'package:platform/widgets/widgets.dart';
 import 'package:date_time_picker/date_time_picker.dart';
 import 'package:country_state_city_picker/country_state_city_picker.dart';
-import 'package:country_state_city_pro/country_state_city_pro.dart';
 
 class UserRegisterTwo extends StatefulWidget {
   const UserRegisterTwo({Key? key}) : super(key: key);

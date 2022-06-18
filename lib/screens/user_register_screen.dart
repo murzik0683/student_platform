@@ -31,18 +31,18 @@ class _UserRegisterState extends State<UserRegister> {
             padding: const EdgeInsets.all(20.0),
             child: Column(children: [
               _buildAvatar(),
-              _buildSpacer(10),
+              _buildSpacer(),
               _buildTextFiledName(),
-              _buildSpacer(10),
+              _buildSpacer(),
               _buildTextFiledPhone(),
-              _buildSpacer(10),
+              _buildSpacer(),
               _buildTextFiledEmail(),
-              _buildSpacer(10),
+              _buildSpacer(),
               _buildTextFiledPassword(),
               _buildTextButton(),
-              _buildSpacer(20),
+              _buildSpacer(space: 20),
               _buildText(),
-              _buildSpacer(10),
+              _buildSpacer(),
               _buildSocialNetwork(),
             ]),
           ),
@@ -123,7 +123,7 @@ class _UserRegisterState extends State<UserRegister> {
             _password = value!;
           },
         ),
-        _buildSpacer(10),
+        _buildSpacer(),
         TextFormField(
           obscureText: true,
           decoration: const InputDecoration(hintText: 'Повторите пароль'),
@@ -137,7 +137,7 @@ class _UserRegisterState extends State<UserRegister> {
             _conformPassword = value!;
           },
         ),
-        _buildSpacer(20),
+        _buildSpacer(space: 20),
       ],
     );
   }
@@ -178,7 +178,7 @@ class _UserRegisterState extends State<UserRegister> {
   }
 }
 
-Widget _buildSpacer(double space) {
+Widget _buildSpacer({double space = 10}) {
   return SizedBox(
     height: space,
   );
