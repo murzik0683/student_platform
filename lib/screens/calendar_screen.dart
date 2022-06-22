@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-
 import 'package:flutter_calendar_carousel/classes/event.dart';
 import 'package:flutter_calendar_carousel/classes/event_list.dart';
 import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart'
     show CalendarCarousel;
 
 class UserCalendar extends StatefulWidget {
+  const UserCalendar({Key? key}) : super(key: key);
+
   @override
   _UserCalendarState createState() => _UserCalendarState();
 }
@@ -79,13 +80,14 @@ class _UserCalendarState extends State<UserCalendar> {
             todayButtonColor: Colors.grey,
             locale: 'RUS',
             onDayPressed: (DateTime date, List<Event> events) {
-              this.setState(() => refresh(date));
+              setState(() => refresh(date));
             },
           )),
           Card(
-              child: Container(
+              child: SizedBox(
                   child: Padding(
-                      padding: EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 16.0),
+                      padding:
+                          const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 16.0),
                       child: Center(
                           child: Text(
                         calendarText,
@@ -123,9 +125,9 @@ EventList<Event> _markedDateMap = EventList<Event>(events: {
 Widget _eventIcon = Container(
   decoration: BoxDecoration(
       color: Colors.white,
-      borderRadius: BorderRadius.all(Radius.circular(1000)),
+      borderRadius: const BorderRadius.all(Radius.circular(1000)),
       border: Border.all(color: Colors.grey, width: 2.0)),
-  child: Icon(
+  child: const Icon(
     Icons.person,
     color: Colors.amber,
   ),

@@ -1,9 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:platform/helpers/colors.dart';
-import 'package:platform/widgets/widgets.dart';
+import 'package:platform/widgets/holder_box.dart';
+import 'package:platform/widgets/social_network_button_small.dart';
+import 'package:platform/widgets/text_button_big.dart';
 import 'package:date_time_picker/date_time_picker.dart';
 import 'package:country_state_city_picker/country_state_city_picker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class UserRegisterTwo extends StatefulWidget {
   const UserRegisterTwo({Key? key}) : super(key: key);
@@ -26,13 +29,27 @@ class _UserRegisterTwoState extends State<UserRegisterTwo> {
   String? countryValue;
   String? stateValue;
   String? cityValue;
-  TextEditingController country = TextEditingController();
-  TextEditingController state = TextEditingController();
-  TextEditingController city = TextEditingController();
+
+  final TextEditingController birthcontroller = TextEditingController();
   late TextEditingController _controller;
+  String? name;
+
+  void saveData() async {
+    SharedPreferences storage = await SharedPreferences.getInstance();
+    storage.setString('birth_key', birthcontroller.text);
+  }
+
+  void getLogin() async {
+    SharedPreferences storage = await SharedPreferences.getInstance();
+    setState(() {
+      name = storage.getString('name_key');
+    });
+  }
+
   @override
   void initState() {
     super.initState();
+    getLogin();
     _controller = TextEditingController();
   }
 
@@ -46,7 +63,8 @@ class _UserRegisterTwoState extends State<UserRegisterTwo> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Регистрация'),
+        title: Text('Привет $name'),
+        centerTitle: true,
       ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
@@ -87,9 +105,13 @@ class _UserRegisterTwoState extends State<UserRegisterTwo> {
               _buildSpacer(5),
               _buildMessengers(),
               _buildSpacer(15),
-              textButton('Сохранить', () {
-                Navigator.of(context).pushReplacementNamed('/first_screen');
-              })
+              TextButtonBig(
+                  title: 'Сохранить',
+                  fun: () {
+                    saveData();
+                    Navigator.of(context)
+                        .pushReplacementNamed('/nav_bar_screen');
+                  })
             ],
           ),
         ),
@@ -98,33 +120,35 @@ class _UserRegisterTwoState extends State<UserRegisterTwo> {
   }
 
   Widget _buildListStudents() {
-    return dropdownButton(DropdownButton<String>(
-      iconSize: 30,
-      isExpanded: true,
-      underline: const SizedBox(),
-      value: valueChoose,
-      items: listItems.map((item) {
-        return DropdownMenuItem<String>(
-          value: item,
-          child: Padding(
-            padding: const EdgeInsets.all(10),
-            child: Text(
-              item,
+    return HolderBox(
+      child: DropdownButton<String>(
+        iconSize: 30,
+        isExpanded: true,
+        underline: const SizedBox(),
+        value: valueChoose,
+        items: listItems.map((item) {
+          return DropdownMenuItem<String>(
+            value: item,
+            child: Padding(
+              padding: const EdgeInsets.all(10),
+              child: Text(
+                item,
+              ),
             ),
-          ),
-        );
-      }).toList(),
-      onChanged: (item) {
-        setState(() {
-          valueChoose = item!;
-        });
-      },
-    ));
+          );
+        }).toList(),
+        onChanged: (item) {
+          setState(() {
+            valueChoose = item!;
+          });
+        },
+      ),
+    );
   }
 
   Widget _buildUniversity() {
-    return dropdownButton(
-      DropdownButton<String>(
+    return HolderBox(
+      child: DropdownButton<String>(
           underline: const SizedBox(),
           isExpanded: true,
           value: valueChooseUniversity,
@@ -148,21 +172,29 @@ class _UserRegisterTwoState extends State<UserRegisterTwo> {
   }
 
   Widget _buildBirthYear() {
-    return dropdownButton(DateTimePicker(
+    return DateTimePicker(
+      controller: birthcontroller,
+      dateMask: "dd-MM-yyyy",
+      locale: const Locale('ru'),
       initialDate: _date,
       type: DateTimePickerType.date,
       firstDate: DateTime(1950),
       lastDate: DateTime.now().add(const Duration(days: 365)),
       decoration: const InputDecoration(
         hintText: 'Дата рождения',
-        border: InputBorder.none,
+        border: OutlineInputBorder(
+          borderSide: BorderSide(color: CustomColors.greyColor),
+          borderRadius: BorderRadius.all(
+            Radius.circular(15),
+          ),
+        ),
         suffixIcon: Icon(
           Icons.arrow_drop_down,
           size: 30,
         ),
         contentPadding: EdgeInsets.all(10),
       ),
-    ));
+    );
   }
 
   Widget _buildCity() {
@@ -188,21 +220,6 @@ class _UserRegisterTwoState extends State<UserRegisterTwo> {
     );
   }
 
-  //Второй вариант выбора адреса
-  // Widget _buildCity() {
-  //   return Column(
-  //     children: [
-  //       CountryStateCityPicker(
-  //         city: city,
-  //         country: country,
-  //         state: state,
-  //         textFieldInputBorder: OutlineInputBorder(
-  //           borderRadius: BorderRadius.circular(15),
-  //         ),
-  //       )
-  //     ],
-  //   );
-  // }
   Widget _buildTextFiled() {
     return CupertinoTextField(
       decoration: BoxDecoration(
@@ -231,12 +248,20 @@ class _UserRegisterTwoState extends State<UserRegisterTwo> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          messengersButton(1, 'assets/images/icon_facebook.png', () {}),
-          messengersButton(2, 'assets/images/icon_vk.png', () {}),
-          messengersButton(3, 'assets/images/icon_odnoklassniki.png', () {}),
-          messengersButton(4, 'assets/images/icon_whatsapp.png', () {}),
-          messengersButton(5, 'assets/images/icon_telegram.png', () {}),
-          messengersButton(6, 'assets/images/icon_instagram.png', () {}),
+          SocialNetworkButtonSmall(
+              tag: 1, image: 'assets/images/icon_facebook.png', fun: () {}),
+          SocialNetworkButtonSmall(
+              tag: 2, image: 'assets/images/icon_vk.png', fun: () {}),
+          SocialNetworkButtonSmall(
+              tag: 3,
+              image: 'assets/images/icon_odnoklassniki.png',
+              fun: () {}),
+          SocialNetworkButtonSmall(
+              tag: 4, image: 'assets/images/icon_whatsapp.png', fun: () {}),
+          SocialNetworkButtonSmall(
+              tag: 5, image: 'assets/images/icon_telegram.png', fun: () {}),
+          SocialNetworkButtonSmall(
+              tag: 6, image: 'assets/images/icon_instagram.png', fun: () {}),
         ],
       ),
     );

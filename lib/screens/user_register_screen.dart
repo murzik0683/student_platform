@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
-import 'package:platform/widgets/widgets.dart';
+import 'package:platform/widgets/social_network_button_big.dart';
+import 'package:platform/widgets/text_button_big.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class UserRegister extends StatefulWidget {
   const UserRegister({Key? key}) : super(key: key);
@@ -10,13 +12,21 @@ class UserRegister extends StatefulWidget {
 }
 
 class _UserRegisterState extends State<UserRegister> {
-  late String _name;
-  late String _phoneNumber;
-  late String _eMail;
-  late String _password;
-  late String _conformPassword;
-  final _controller = TextEditingController();
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  final _passwordFieldKey = GlobalKey<FormFieldState<String>>();
+  bool _obscureText = true;
+  bool _obscureTextTwo = true;
+
+  void register() async {
+    SharedPreferences storage = await SharedPreferences.getInstance();
+    storage.setString('name_key', nameController.text);
+    storage.setString('password_key', passwordController.text);
+    storage.setString('email_key', emailController.text);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -65,14 +75,14 @@ class _UserRegisterState extends State<UserRegister> {
 
   Widget _buildTextFiledName() {
     return TextFormField(
-      controller: _controller,
-      decoration: const InputDecoration(hintText: 'Ваше имя'),
+      textCapitalization: TextCapitalization.sentences,
+      controller: nameController,
+      decoration: _inputDecoration(
+        'Ваше имя',
+      ),
       validator: (value) {
         if (value!.isEmpty) return 'Введите Ваше имя';
         return null;
-      },
-      onSaved: (value) {
-        _name = value!;
       },
     );
   }
@@ -86,13 +96,17 @@ class _UserRegisterState extends State<UserRegister> {
       hintText: 'Телефон',
       errorMessage: 'Введите корректный номер телефона',
       initialValue: number,
+      inputBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(15),
+      ),
     );
   }
 
   Widget _buildTextFiledEmail() {
     return TextFormField(
+      controller: emailController,
       keyboardType: TextInputType.emailAddress,
-      decoration: const InputDecoration(hintText: 'E-mail'),
+      decoration: _inputDecoration('E-mail'),
       validator: (value) {
         if (value!.isEmpty) return 'Введите E-mail';
         if (!RegExp(
@@ -100,41 +114,53 @@ class _UserRegisterState extends State<UserRegister> {
             .hasMatch(value)) return 'Введите корректный E-mail';
         return null;
       },
-      onSaved: (value) {
-        _eMail = value!;
-      },
     );
   }
 
   Widget _buildTextFiledPassword() {
-    final _passwordFieldKey = GlobalKey<FormFieldState<String>>();
     return Column(
       children: [
         TextFormField(
-          obscureText: true,
+          controller: passwordController,
+          obscureText: _obscureText,
           key: _passwordFieldKey,
-          decoration: const InputDecoration(hintText: 'Пароль'),
+          decoration: _inputDecoration(
+            'Пароль',
+            InkWell(
+              onTap: () {
+                setState(() {
+                  _obscureText = !_obscureText;
+                });
+              },
+              child:
+                  Icon(_obscureText ? Icons.visibility_off : Icons.visibility),
+            ),
+          ),
           validator: (value) {
             if (value!.isEmpty) return 'Введите пароль';
             if (value.length < 6) return 'Слишком короткий пароль';
             return null;
           },
-          onSaved: (value) {
-            _password = value!;
-          },
         ),
         _buildSpacer(),
         TextFormField(
-          obscureText: true,
-          decoration: const InputDecoration(hintText: 'Повторите пароль'),
+          obscureText: _obscureTextTwo,
+          decoration: _inputDecoration(
+              'Повторите пароль',
+              InkWell(
+                onTap: () {
+                  setState(() {
+                    _obscureTextTwo = !_obscureTextTwo;
+                  });
+                },
+                child: Icon(
+                    _obscureTextTwo ? Icons.visibility_off : Icons.visibility),
+              )),
           validator: (value) {
             if (value != _passwordFieldKey.currentState!.value) {
               return 'Пароль не совпадает';
             }
             return null;
-          },
-          onSaved: (value) {
-            _conformPassword = value!;
           },
         ),
         _buildSpacer(space: 20),
@@ -143,15 +169,17 @@ class _UserRegisterState extends State<UserRegister> {
   }
 
   Widget _buildTextButton() {
-    return textButton('Зарегистрироваться', () {
-      if (_formKey.currentState!.validate()) {
-        setState(() {
-          Navigator.of(context)
-              .pushReplacementNamed('/user_register_screen_two');
+    return TextButtonBig(
+        title: 'Зарегистрироваться',
+        fun: () {
+          if (_formKey.currentState!.validate()) {
+            setState(() {
+              register();
+              Navigator.of(context)
+                  .pushReplacementNamed('/user_register_screen_two');
+            });
+          }
         });
-      }
-      _formKey.currentState!.save();
-    });
   }
 
   Widget _buildText() {
@@ -169,9 +197,17 @@ class _UserRegisterState extends State<UserRegister> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          floatButton(1, 'assets/images/icon_facebook.png', () {}),
-          floatButton(2, 'assets/images/icon_vk.png', () {}),
-          floatButton(3, 'assets/images/icon_odnoklassniki.png', () {}),
+          SocialNetworkButtonBig(
+            tag: 1,
+            image: 'assets/images/icon_facebook.png',
+            fun: () {},
+          ),
+          SocialNetworkButtonBig(
+              tag: 2, image: 'assets/images/icon_vk.png', fun: () {}),
+          SocialNetworkButtonBig(
+              tag: 3,
+              image: 'assets/images/icon_odnoklassniki.png',
+              fun: () {}),
         ],
       ),
     );
@@ -181,5 +217,15 @@ class _UserRegisterState extends State<UserRegister> {
 Widget _buildSpacer({double space = 10}) {
   return SizedBox(
     height: space,
+  );
+}
+
+InputDecoration _inputDecoration(String hintText, [Widget? child]) {
+  return InputDecoration(
+    hintText: hintText,
+    suffixIcon: child,
+    border: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(15),
+    ),
   );
 }
